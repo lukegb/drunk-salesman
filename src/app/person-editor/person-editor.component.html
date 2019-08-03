@@ -1,0 +1,16 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+        <input matInput placeholder="Name" formControlName="name">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput appMapsAutocomplete placeholder="Starting at" formControlName="startingLocation"
+            (placeChanged)="startingLocationChanged($event)">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput appMapsAutocomplete placeholder="Finishing at" formControlName="endingLocation"
+            (placeChanged)="endingLocationChanged($event)">
+    </mat-form-field>
+
+    <button mat-button type="submit" color="primary">Save</button>
+    <button mat-button (click)="cancelEdit()">Cancel</button>
+</form>

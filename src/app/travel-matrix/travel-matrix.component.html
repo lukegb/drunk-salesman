@@ -1,0 +1,15 @@
+<table *ngIf="uiMatrix">
+    <thead>
+        <tr>
+            <th></th>
+            <th *ngFor="let head of uiMatrix.columnHeaders">{{head}}</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let row of uiMatrix.cells; index as idx">
+            <th>{{uiMatrix.rowHeaders[idx]}}</th>
+            <td *ngFor="let cell of row">{{cell}}</td>
+        </tr>
+    </tbody>
+</table>

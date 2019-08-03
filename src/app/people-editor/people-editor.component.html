@@ -1,0 +1,17 @@
+<div *ngFor="let person of people; index as i">
+    <button mat-icon-button class="delete-btn float-btn" (click)="deletePerson(i)">
+        <mat-icon>delete</mat-icon>
+    </button>
+    <button mat-icon-button class="edit-btn float-btn" *ngIf="!editing[i]" (click)="editing[i] = true">
+        <mat-icon>edit</mat-icon>
+    </button>
+    <h2 class="person-name">{{person.name}}</h2>
+    <app-person-editor [person]="person" (updated)="setPerson(i, $event)" *ngIf="editing[i]">
+    </app-person-editor>
+    <app-person-view [person]="person" *ngIf="!editing[i]"></app-person-view>
+    <mat-divider></mat-divider>
+</div>
+
+<button mat-button (click)="addEmptyPerson()">
+    Add another person
+</button>

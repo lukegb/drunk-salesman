@@ -1,0 +1,25 @@
+<agm-map [fitBounds]="true">
+    <agm-marker [agmFitBounds]="true" [latitude]="place.latitude" [longitude]="place.longitude" [title]="place.name"
+        [label]="(i+1).toString()" *ngFor="let place of places; index as i" [iconUrl]="redIcon"
+        (markerClick)="placeClick(i, place)">
+    </agm-marker>
+    <ng-template ngFor let-person [ngForOf]="people" let-i="index">
+        <agm-marker [agmFitBounds]="true" [latitude]="person.startingLocation.latitude"
+            [longitude]="person.startingLocation.longitude" [title]="person.name + ': Start'"
+            [label]="labelForPersonMarker(i)" [iconUrl]="blueIcon"
+            (markerClick)="personClick(i, person, 'startingLocation')"></agm-marker>
+        <agm-marker [agmFitBounds]="true" [latitude]="person.endingLocation.latitude"
+            [longitude]="person.endingLocation.longitude" [title]="person.name + ': Finish'"
+            [label]="labelForPersonMarker(i)" [iconUrl]="greenIcon"
+            (markerClick)="personClick(i, person, 'endingLocation')"></agm-marker>
+        <ng-template ngFor let-place [ngForOf]="places" let-placeIdx="index">
+            <agm-polyline *ngIf="showPlaceLines === placeIdx || showPersonLines === i">
+                <agm-polyline-point [latitude]="person.startingLocation.latitude"
+                    [longitude]="person.startingLocation.longitude"></agm-polyline-point>
+                <agm-polyline-point [latitude]="place.latitude" [longitude]="place.longitude"></agm-polyline-point>
+                <agm-polyline-point [latitude]="person.endingLocation.latitude"
+                    [longitude]="person.endingLocation.longitude"></agm-polyline-point>
+            </agm-polyline>
+        </ng-template>
+    </ng-template>
+</agm-map>
