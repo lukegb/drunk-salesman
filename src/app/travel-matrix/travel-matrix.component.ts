@@ -130,10 +130,11 @@ export class TravelMatrixComponent implements OnInit, OnChanges {
   }
 
   private generateUIMatrix(): UIMatrix {
+    const orderedPlaces = this.places.map<[Place, number, number]>((p, idx) => [p, this.score(p), idx]).sort((a, b) => a[1] - b[1]);
     return {
       columnHeaders: this.people.map(p => p.name),
-      rowHeaders: this.places.map(p => p.name),
-      cells: this.places.map(place => this.people.map(person => this.cellText(place, person)).concat(this.score(place).toString())),
+      rowHeaders: orderedPlaces.map(p => `${p[0].name} (${p[2] + 1})`),
+      cells: orderedPlaces.map(p => this.people.map(person => this.cellText(p[0], person)).concat(p[1].toString())),
     };
   }
 

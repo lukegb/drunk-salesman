@@ -13,10 +13,14 @@ mat-sidenav {
 }
 mat-sidenav-content {
     display: flex;
+    flex-direction: column;
 }
-mat-tab-group {
+app-map {
     flex-grow: 1;
 }
-::ng-deep .mat-tab-body-wrapper {
-    flex-grow: 1;
-}
+// mat-tab-group {
+//     flex-grow: 1;
+// }
+// ::ng-deep .mat-tab-body-wrapper {
+//     flex-grow: 1;
+// }
