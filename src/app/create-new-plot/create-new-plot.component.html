@@ -1,0 +1,13 @@
+<div class="midbox" *ngIf="pleaseWait">
+    <h1>One moment please...</h1>
+    <mat-spinner></mat-spinner>
+    <p>Creating a new plot, just for you :)</p>
+</div>
+<div class="midbox" *ngIf="!pleaseWait">
+    <h1>Welcome to Drunken Salesman</h1>
+    <p>Would you like to create a "shareable" plot, which is saved online, or just use the tool offline?</p>
+    <div class="btngrp">
+        <button mat-raised-button (click)="createFirestorePlot()" color="primary">Online</button>
+        <button mat-button (click)="createOfflinePlot()" color="primary">Offline</button>
+    </div>
+</div>

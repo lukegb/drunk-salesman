@@ -5,22 +5,7 @@
     flex-direction: column;
 }
 
-mat-sidenav-container {
-    flex-grow: 1;
-}
-mat-sidenav {
-    width: 30%;
-}
-mat-sidenav-content {
+.content {
     display: flex;
-    flex-direction: column;
-}
-app-map {
     flex-grow: 1;
 }
-// mat-tab-group {
-//     flex-grow: 1;
-// }
-// ::ng-deep .mat-tab-body-wrapper {
-//     flex-grow: 1;
-// }

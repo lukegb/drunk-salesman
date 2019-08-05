@@ -1,0 +1,21 @@
+<mat-sidenav-container *ngIf="!loading">
+    <mat-sidenav mode="side" disableClose opened>
+        <mat-tab-group>
+            <mat-tab label="People">
+                <app-people-editor [people]="plot.people" (addedPerson)="addPerson($event)"
+                    (updatedPerson)="updatePerson($event)" (deletedPerson)="deletePerson($event)"></app-people-editor>
+            </mat-tab>
+            <mat-tab label="Places">
+                <em>TODO(lukegb): editor here</em>
+                <ol>
+                    <li *ngFor="let place of plot.places; index as i"><strong>{{place.name}}</strong>: {{place.address}}
+                    </li>
+                </ol>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <app-map [people]="plot.people" [places]="plot.places"></app-map>
+        <app-travel-matrix [people]="plot.people" [places]="plot.places"></app-travel-matrix>
+    </mat-sidenav-content>
+</mat-sidenav-container>

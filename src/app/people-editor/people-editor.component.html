@@ -1,14 +1,26 @@
-<div *ngFor="let person of people; index as i">
-    <button mat-icon-button class="delete-btn float-btn" (click)="deletePerson(i)">
+<div *ngFor="let person of people">
+    <button mat-icon-button class="delete-btn float-btn" (click)="deletePerson(person)">
         <mat-icon>delete</mat-icon>
     </button>
-    <button mat-icon-button class="edit-btn float-btn" *ngIf="!editing[i]" (click)="editing[i] = true">
+    <button mat-icon-button class="edit-btn float-btn" *ngIf="!editing.get(person.id)"
+        (click)="editing.set(person.id, true)">
         <mat-icon>edit</mat-icon>
     </button>
     <h2 class="person-name">{{person.name}}</h2>
-    <app-person-editor [person]="person" (updated)="setPerson(i, $event)" *ngIf="editing[i]">
+    <app-person-editor [person]="person" (updated)="setPerson($event)" (cancelled)="editing.set(person.id, false)"
+        *ngIf="editing.get(person.id)">
     </app-person-editor>
-    <app-person-view [person]="person" *ngIf="!editing[i]"></app-person-view>
+    <app-person-view [person]="person" *ngIf="!editing.get(person.id)"></app-person-view>
+    <mat-divider></mat-divider>
+</div>
+<div *ngFor="let person of creatingPeople; index as i">
+    <button mat-icon-button class="delete-btn float-btn" (click)="deleteCreatingPerson(i)" *ngIf="deleteAllowed()">
+        <mat-icon>delete</mat-icon>
+    </button>
+    <h2 class="person-name">{{person.name}}</h2>
+    <app-person-editor [person]="person" (updated)="createPerson($event, i)" (cancelled)="deleteCreatingPerson(i)"
+        [cancelAllowed]="deleteAllowed()">
+    </app-person-editor>
     <mat-divider></mat-divider>
 </div>
 

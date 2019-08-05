@@ -2,30 +2,6 @@
     <span>Drunken Salesman</span>
 </mat-toolbar>
 
-<mat-sidenav-container>
-    <mat-sidenav mode="side" disableClose opened>
-        <mat-tab-group>
-            <mat-tab label="People">
-                <app-people-editor (updatedPeople)="people = $event"></app-people-editor>
-            </mat-tab>
-            <mat-tab label="Places">
-                <em>TODO(lukegb): editor here</em>
-                <ol>
-                    <li *ngFor="let place of places; index as i"><strong>{{place.name}}</strong>: {{place.address}}</li>
-                </ol>
-            </mat-tab>
-        </mat-tab-group>
-    </mat-sidenav>
-    <mat-sidenav-content>
-        <!-- <mat-tab-group [dynamicHeight]="false">
-            <mat-tab label="Map">
-                <app-map [people]="people" [places]="places"></app-map>
-            </mat-tab>
-            <mat-tab label="Matrix">
-                <app-travel-matrix [people]="people" [places]="places"></app-travel-matrix>
-            </mat-tab>
-        </mat-tab-group> -->
-        <app-map [people]="people" [places]="places"></app-map>
-        <app-travel-matrix [people]="people" [places]="places"></app-travel-matrix>
-    </mat-sidenav-content>
-</mat-sidenav-container>
+<div class="content">
+    <router-outlet></router-outlet>
+</div>

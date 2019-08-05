@@ -1,0 +1,18 @@
+:host {
+    display: flex;
+    flex-grow: 1;
+}
+
+mat-sidenav-container {
+    flex-grow: 1;
+}
+mat-sidenav {
+    width: 30%;
+}
+mat-sidenav-content {
+    display: flex;
+    flex-direction: column;
+}
+app-map {
+    flex-grow: 1;
+}

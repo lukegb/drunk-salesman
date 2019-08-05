@@ -12,5 +12,5 @@
     </mat-form-field>
 
     <button mat-button type="submit" color="primary">Save</button>
-    <button mat-button (click)="cancelEdit()">Cancel</button>
+    <button mat-button (click)="cancelEdit()" *ngIf="cancelAllowed">Cancel</button>
 </form>

@@ -1,5 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Person } from '../person';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'app-people-editor',
@@ -8,59 +9,59 @@ import { Person } from '../person';
 })
 export class PeopleEditorComponent implements OnInit {
 
-  @Output() updatedPeople = new EventEmitter<Person[]>();
+  @Output() addedPerson = new EventEmitter<Person>();
+  @Output() updatedPerson = new EventEmitter<Person>();
+  @Output() deletedPerson = new EventEmitter<Person>();
+  @Input() people: Person[] = [];
+  creatingPeople: Person[] = [];
 
-  people: Person[] = [];
-  editing: boolean[] = [];
-
-  loadPeople(): boolean {
-    const maybePeople = window.localStorage.getItem('people');
-    if (maybePeople === null) return false;
-    this.people = JSON.parse(maybePeople);
-    for (let i = 0; i < this.people.length; i++) {
-      this.editing.push(false);
-    }
-    return true;
-  }
-
-  savePeople(): void {
-    // TODO(lukegb): This save/load functionality should really be in a service...
-    window.localStorage.setItem('people', JSON.stringify(this.people));
-    this.emitUpdate();
-  }
+  editing: Map<string, boolean> = new Map<string, boolean>();
 
   ngOnInit() {
-    if (!this.loadPeople()) {
+    this.ensureAtLeastOnePerson();
+  }
+
+  ensureAtLeastOnePerson() {
+    if (this.people.length === 0 && this.creatingPeople.length === 0) {
       this.addEmptyPerson();
     }
-    this.emitUpdate();
   }
 
-  setPerson(i, person) {
-    this.editing[i] = false;
-    this.people[i] = person;
-    this.savePeople();
+  setPerson(person: Person) {
+    this.editing.set(person.id, false);
+    this.updatedPerson.emit(person);
   }
 
-  deletePerson(i) {
-    this.editing.splice(i, 1);
-    this.people.splice(i, 1);
-    this.savePeople();
+  createPerson(person: Person, i: number) {
+    this.editing.set(person.id, false);
+    this.creatingPeople.splice(i, 1);
+    this.addedPerson.emit(person);
+  }
+
+  deleteAllowed(): boolean {
+    return this.people.length > 0 || this.creatingPeople.length > 1;
+  }
+
+  deletePerson(person: Person) {
+    this.deletedPerson.emit(person);
+    this.editing.delete(person.id);
+    this.ensureAtLeastOnePerson();
+  }
+
+  deleteCreatingPerson(index: number) {
+    this.creatingPeople.splice(index, 1);
+    this.ensureAtLeastOnePerson();
   }
 
   addEmptyPerson() {
-    this.people.push({
-      name: `Person ${this.people.length + 1}`,
+    const newPerson: Person = {
+      id: uuid(),
+      name: `Person ${this.people.length + this.creatingPeople.length + 1}`,
       startingLocation: null,
       endingLocation: null,
-    });
-    this.editing.push(true);
-  }
-
-  emitUpdate() {
-    this.updatedPeople.emit(this.people.filter((person) => {
-      return person.name && person.startingLocation && person.endingLocation;
-    }));
+    };
+    this.creatingPeople.push(newPerson);
+    this.editing.set(newPerson.id, true);
   }
 
 }

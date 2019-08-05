@@ -11,7 +11,9 @@ import { Place } from '../place';
 export class PersonEditorComponent implements OnInit {
 
   @Input() person: Person;
+  @Input() cancelAllowed: boolean = true;
   @Output() updated = new EventEmitter<Person>();
+  @Output() cancelled = new EventEmitter<void>();
 
   startingLocation: Place;
   endingLocation: Place;
@@ -48,6 +50,7 @@ export class PersonEditorComponent implements OnInit {
 
   onSubmit() {
     this.updated.emit({
+      id: this.person.id,
       name: this.formGroup.value.name,
       startingLocation: this.startingLocation,
       endingLocation: this.endingLocation,
@@ -55,7 +58,7 @@ export class PersonEditorComponent implements OnInit {
   }
 
   cancelEdit() {
-    this.updated.emit(this.person);
+    this.cancelled.emit();
   }
 
 }
