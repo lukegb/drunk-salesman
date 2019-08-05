@@ -1,10 +1,10 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Plot, DEFAULT_PLOT } from '../plot';
 import { Person } from '../person';
-import { Subject } from 'rxjs';
+import { Subject, fromEvent, Observable } from 'rxjs';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap, map, takeUntil, tap } from 'rxjs/operators';
+import { switchMap, map, takeUntil, tap, debounceTime, startWith } from 'rxjs/operators';
 
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -19,6 +19,7 @@ export class PlotComponent implements OnDestroy {
   plot: Plot;
   loading: boolean = true;
   private unsubscribe$ = new Subject();
+  isScreenSmall$?: Observable<boolean>;
 
   constructor(db: AngularFirestore, route: ActivatedRoute) {
     route.paramMap.pipe(
@@ -36,6 +37,14 @@ export class PlotComponent implements OnDestroy {
         }
       }
     });
+  }
+
+  ngOnInit(): void {
+    const isSmall = () => document.body.offsetWidth <= 800;
+    const screenSizeChanged$ = fromEvent(window, 'resize').pipe(
+      debounceTime(500),
+      map(isSmall));
+    this.isScreenSmall$ = screenSizeChanged$.pipe(startWith(isSmall()));
   }
 
   ngOnDestroy(): void {

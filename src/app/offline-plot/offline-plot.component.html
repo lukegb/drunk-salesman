@@ -1,21 +1,25 @@
-<mat-sidenav-container *ngIf="!loading">
-    <mat-sidenav mode="side" disableClose opened>
-        <mat-tab-group>
-            <mat-tab label="People">
-                <app-people-editor [people]="plot.people" (addedPerson)="addPerson($event)"
-                    (updatedPerson)="updatePerson($event)" (deletedPerson)="deletePerson($event)"></app-people-editor>
-            </mat-tab>
-            <mat-tab label="Places">
-                <em>TODO(lukegb): editor here</em>
-                <ol>
-                    <li *ngFor="let place of plot.places; index as i"><strong>{{place.name}}</strong>: {{place.address}}
-                    </li>
-                </ol>
-            </mat-tab>
-        </mat-tab-group>
-    </mat-sidenav>
-    <mat-sidenav-content>
-        <app-map [people]="plot.people" [places]="plot.places"></app-map>
-        <app-travel-matrix [people]="plot.people" [places]="plot.places"></app-travel-matrix>
-    </mat-sidenav-content>
-</mat-sidenav-container>
+<div class="container">
+    <mat-tab-group>
+        <mat-tab label="People">
+            <app-people-editor [people]="plot.people" (addedPerson)="addPerson($event)"
+                (updatedPerson)="updatePerson($event)" (deletedPerson)="deletePerson($event)"></app-people-editor>
+        </mat-tab>
+        <mat-tab label="Places">
+            <em>TODO(lukegb): editor here</em>
+            <ol>
+                <li *ngFor="let place of plot.places; index as i"><strong>{{place.name}}</strong>: {{place.address}}
+                </li>
+            </ol>
+        </mat-tab>
+        <mat-tab label="Map" *ngIf="isScreenSmall$ | async">
+            <app-map [people]="plot.people" [places]="plot.places" class="little-map"></app-map>
+        </mat-tab>
+        <mat-tab label="Results" *ngIf="isScreenSmall$ | async">
+            <app-travel-matrix [people]="plot.people" [places]="plot.places"></app-travel-matrix>
+        </mat-tab>
+    </mat-tab-group>
+    <app-map [people]="plot.people" [places]="plot.places" *ngIf="!(isScreenSmall$ | async)" class="big-map"></app-map>
+    <app-travel-matrix [people]="plot.people" [places]="plot.places" *ngIf="!(isScreenSmall$ | async)"
+        class="big-matrix">
+    </app-travel-matrix>
+</div>

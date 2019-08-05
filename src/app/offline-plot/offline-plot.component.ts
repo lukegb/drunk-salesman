@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Plot, DEFAULT_PLOT } from '../plot';
 import { Person } from '../person';
+import { Observable, fromEvent } from 'rxjs';
+import { debounceTime, map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-offline-plot',
@@ -10,8 +12,16 @@ import { Person } from '../person';
 export class OfflinePlotComponent implements OnInit {
   plot: Plot;
 
+  isScreenSmall$?: Observable<boolean>;
+
   ngOnInit() {
     this.plot = DEFAULT_PLOT;
+
+    const isSmall = () => document.body.offsetWidth <= 800;
+    const screenSizeChanged$ = fromEvent(window, 'resize').pipe(
+      debounceTime(500),
+      map(isSmall));
+    this.isScreenSmall$ = screenSizeChanged$.pipe(startWith(isSmall()));
   }
 
   addPerson(person: Person) {
