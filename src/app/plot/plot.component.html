@@ -1,25 +1,33 @@
-<div class="container">
+<div class="container" *ngIf="plot$ | async as plotDoc">
     <mat-tab-group>
         <mat-tab label="People">
-            <app-people-editor [people]="plot.people" (addedPerson)="addPerson($event)"
-                (updatedPerson)="updatePerson($event)" (deletedPerson)="deletePerson($event)"></app-people-editor>
+            <app-people-editor [people]="plotDoc.people" (addedPerson)="plot.addPerson($event)"
+                (updatedPerson)="plot.updatePerson($event)" (deletedPerson)="plot.deletePerson($event)">
+            </app-people-editor>
         </mat-tab>
         <mat-tab label="Places">
             <em>TODO(lukegb): editor here</em>
             <ol>
-                <li *ngFor="let place of plot.places; index as i"><strong>{{place.name}}</strong>: {{place.address}}
+                <li *ngFor="let place of plotDoc.places; index as i"><strong>{{place.name}}</strong>:
+                    {{place.address}}
                 </li>
             </ol>
         </mat-tab>
         <mat-tab label="Map" *ngIf="isScreenSmall$ | async">
-            <app-map [people]="plot.people" [places]="plot.places" class="little-map"></app-map>
+            <app-map [people]="plotDoc.people" [places]="plotDoc.places" class="little-map"></app-map>
         </mat-tab>
         <mat-tab label="Results" *ngIf="isScreenSmall$ | async">
-            <app-travel-matrix [people]="plot.people" [places]="plot.places"></app-travel-matrix>
+            <app-travel-matrix [people]="plotDoc.people" [places]="plotDoc.places">
+            </app-travel-matrix>
         </mat-tab>
     </mat-tab-group>
-    <app-map [people]="plot.people" [places]="plot.places" *ngIf="!(isScreenSmall$ | async)" class="big-map"></app-map>
-    <app-travel-matrix [people]="plot.people" [places]="plot.places" *ngIf="!(isScreenSmall$ | async)"
+    <app-map [people]="plotDoc.people" [places]="plotDoc.places" *ngIf="!(isScreenSmall$ | async)" class="big-map">
+    </app-map>
+    <app-travel-matrix [people]="plotDoc.people" [places]="plotDoc.places" *ngIf="!(isScreenSmall$ | async)"
         class="big-matrix">
     </app-travel-matrix>
+</div>
+<div class="midbox" *ngIf="!(plot$ | async)">
+    <h1>Loading...</h1>
+    <mat-spinner></mat-spinner>
 </div>

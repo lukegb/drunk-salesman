@@ -28,15 +28,13 @@ import { TravelMatrixComponent } from './travel-matrix/travel-matrix.component';
 import { PlotComponent } from './plot/plot.component';
 
 import { environment } from '../environments/environment';
-import { OfflinePlotComponent } from './offline-plot/offline-plot.component';
 import { CreateNewPlotComponent } from './create-new-plot/create-new-plot.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
 const appRoutes: Routes = [
-  { path: 'plot/offline', component: OfflinePlotComponent },
-  { path: 'plot/:id', component: PlotComponent },
+  { path: 'plot/:id', component: PlotComponent, data: { setsOwnTitle: true } },
   { path: '', component: CreateNewPlotComponent, pathMatch: 'full' },
-  { path: '**', component: NotFoundComponent },
+  { path: '**', component: NotFoundComponent, data: { title: 'Not Found' } },
 ]
 
 @NgModule({
@@ -49,7 +47,6 @@ const appRoutes: Routes = [
     MapComponent,
     TravelMatrixComponent,
     PlotComponent,
-    OfflinePlotComponent,
     CreateNewPlotComponent,
     NotFoundComponent,
   ],
